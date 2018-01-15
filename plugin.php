@@ -9,16 +9,8 @@
  * Description: Random meta box.
  */
 
-
-/**
- * Meta box initialization.
- */
-function init_metabox() {
-	add_action( 'add_meta_boxes', 'sample_add_metabox' );
-	add_action( 'save_post', 'sample_save_metabox', 10, 2 );
-}
-
-add_action( 'admin_init', 'init_metabox' );
+add_action( 'add_meta_boxes', 'sample_add_metabox' );
+add_action( 'save_post', 'sample_save_metabox', 10, 2 );
 
 /**
  * Adds the meta box.
@@ -29,7 +21,7 @@ function sample_add_metabox() {
 		__( 'Post Notes', 'textdomain' ),
 		'sample_render_metabox',
 		'post',
-		'advanced',
+		'normal',
 		'default'
 	);
 }
@@ -82,6 +74,10 @@ function sample_save_metabox( $post_id, $post ) {
 
 	// Check if not a revision.
 	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
+
+	if ( ! isset( $_POST['notes'] ) ) {
 		return;
 	}
 
